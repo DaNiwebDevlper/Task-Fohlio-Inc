@@ -42,14 +42,16 @@ export const UserFormModal = ({ open, onClose, user }: Props) => {
                 })
                 updateUser(data.updateUser)
                 toast.success('User updated successfully')
-            } else {
+            }
+            else {
                 const { data } = await createUser({
                     variables: { input: values },
                 })
-                addUser(data.createUser)
+                addUser(data.addUser)
+                await refetch()
                 toast.success('User created successfully')
-                refetch()
             }
+
             onClose()
         } catch (err) {
             notification.error({ message: 'Error submitting form' })

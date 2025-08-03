@@ -66,7 +66,7 @@ export const UserTable = ({ onEdit, setUserData, onDelete }: PropsType) => {
     };
 
     const uniqueRoles = useMemo(() => {
-        return [...new Set(users.map((u) => u.role))];
+        return [...new Set(users.map((u) => u?.role))];
     }, [users]);
 
     const columns: ColumnsType<User> = [
@@ -81,7 +81,7 @@ export const UserTable = ({ onEdit, setUserData, onDelete }: PropsType) => {
             title: 'Role',
             dataIndex: 'role',
             filters: uniqueRoles.map((role) => ({
-                text: role.charAt(0).toUpperCase() + role.slice(1),
+                text: role?.charAt(0).toUpperCase() + role?.slice(1),
                 value: role,
             })),
             onFilter: (value, record) => record.role === value,
@@ -102,11 +102,11 @@ export const UserTable = ({ onEdit, setUserData, onDelete }: PropsType) => {
                         value={status}
                         onChange={(val) => handleStatusChange(val, user)}
                         bordered={false}
-                        style={{ color: colorMap[status], fontWeight: 500 }}
+
                     >
-                        <Option value="active">Active</Option>
-                        <Option value="banned">Banned</Option>
-                        <Option value="pending">Pending</Option>
+                        <Option value="active"> <span style={{ color: colorMap[status], fontWeight: 500 }}>Active</span></Option>
+                        <Option value="banned"><span style={{ color: colorMap[status], fontWeight: 500 }}>Banned</span></Option>
+                        <Option value="pending"><span style={{ color: colorMap[status], fontWeight: 500 }}>Pending</span></Option>
                     </Select>
                 );
             },
@@ -152,11 +152,14 @@ export const UserTable = ({ onEdit, setUserData, onDelete }: PropsType) => {
                     style={{ width: 200 }}
                     onChange={(value) => setSelectedRole(value)}
                 >
-                    {uniqueRoles.map((role) => (
-                        <Option key={role} value={role}>
-                            {role}
-                        </Option>
-                    ))}
+                    <Option value={null}>All Roles</Option>
+                    <Option key="admin" value={'admin'}>
+                        Admin                        </Option>
+                    <Option key="user" value={'user'}>
+                        User                    </Option>
+                    <Option key="moderator" value={'moderator'}>
+                        Moderator
+                    </Option>
                 </Select>
             </Space>
 
@@ -166,7 +169,8 @@ export const UserTable = ({ onEdit, setUserData, onDelete }: PropsType) => {
                 loading={loading}
                 rowKey="id"
                 pagination={filteredUsers.length > 10 ? { pageSize: 10 } : false}
-                scroll={{ x: true }}
+                size="middle"
+                scroll={{ x: 800 }}
                 bordered
             />
         </div>

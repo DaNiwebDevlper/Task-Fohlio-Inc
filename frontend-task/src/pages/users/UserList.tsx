@@ -18,6 +18,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'
 import "../userListStyle.css"
 import { UserTable } from '../../shared/ui/UserTable'
 import { DeleteUserModal } from '../../features/user-delete/DeleteUserModal'
+import { toast } from 'react-toastify'
 
 
 export const UserList = () => {
@@ -60,6 +61,7 @@ export const UserList = () => {
         try {
             await deleteUser({ variables: { id: editingUser.id } });
             useUserStore.getState().deleteUserFromStore(editingUser.id);
+            toast.success("User deleted successfully");
         } catch (error) {
             console.error("Error deleting user:", error);
 
